@@ -1,7 +1,7 @@
 # Cvd_NCGFS_TrendAnalysis
 
 <div align="left">
-  <img src="" width="350">
+  <img src="https://github.com/s0810110/Cvd_NCGFS_TrendAnalysis/blob/master/data/logoNCGFS.png" width="750" >
 </div>
 
 ## Deep Learning Reinforced RNN for Covid-19 trend prediction 
