@@ -29,8 +29,8 @@ BibTeX entry:
 	journaltitle = {{medRxiv}},
 	author = {Dong, Tim and Benedetto, Umberto and Sinha, Shubhra and Dimagli, Arnaldo and Caputo, Massimo and Angelini, Gianni D},
 	date = {2021},
-	note = {Publisher: Cold Spring Harbor Laboratory Press
-\_eprint: https://www.medrxiv.org/content/early/2021/05/22/2021.05.21.20248630.full.pdf}
+	note = {Publisher: Cold Spring Harbor Laboratory Press}
+}
 
 ## License
 
