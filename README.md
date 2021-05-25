@@ -24,12 +24,9 @@ BibTeX entry:
 ```bibtex
 @article{dong_deep_2021,
 	title = {A Deep Recurrent Reinforced Learning model to compare the efficacy of targeted local vs. national measures on the spread of {COVID}-19 in the {UK}},
-	url = {https://www.medrxiv.org/content/early/2021/05/22/2021.05.21.20248630},
-	doi = {10.1101/2021.05.21.20248630},
-	journaltitle = {{medRxiv}},
 	author = {Dong, Tim and Benedetto, Umberto and Sinha, Shubhra and Dimagli, Arnaldo and Caputo, Massimo and Angelini, Gianni D},
-	date = {2021},
-	note = {Publisher: Cold Spring Harbor Laboratory Press}
+	journal = {medRxiv},
+	date = {2021}
 }
 
 ## License
