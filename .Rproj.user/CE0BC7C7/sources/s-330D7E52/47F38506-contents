@@ -1,0 +1,44 @@
+
+library(ggplot2)
+library(data.table)
+library(plotly)
+library(reshape2)
+
+Y_S_Aureus_No_Preprocessing_withMz <- fread('C:/Users/qd18830/OneDrive - University of Bristol/Documents/PhD/WFMM/Staph Aureus/unPreprocessed_SAureuswithMZ/Y_S_Aureus_No_Preprocessing_withMz.csv', data.table=FALSE)
+
+ind1 = Y_S_Aureus_No_Preprocessing_withMz[, "strain"] == 2072;
+#ind2 = Y_S_Aureus_No_Preprocessing_withMz[, "V1"] == 1791532;
+
+Y1 = Y_S_Aureus_No_Preprocessing_withMz[ind1,];
+
+Y1$ID = paste0(Y1$strain, ".", 1:length(Y1$strain))
+
+Y1$Label = paste0("je2", ".", Y1$ID)
+
+Y <- melt(Y1, id.vars = c("strain", "ID", "Label"), variable.name = "m/z", value.name = "Intensity")
+
+
+q <- ggplot(data = Y, aes(x = as.numeric(as.character(`m/z`)), y = `Intensity`, group=`Label`, color=`Label` )) + theme_bw() + geom_line() + labs(color=NULL)  + xlab("m/z") + ylab("Intensity") + ggtitle(paste0("S.Aureus Je2 strain: intensity by m/z for 8 replicates")) + theme(plot.title = element_text(hjust = 0), plot.background = element_rect(fill = "#F5F5F5", colour = "#F5F5F5")) + guides(color = guide_legend(override.aes = list(size = 1.5))) + theme(legend.title=element_blank(),  legend.direction = "vertical", legend.position="right") + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, margin=margin(5,0,7,0),face="bold")) + 
+  scale_x_continuous(breaks = seq(min(as.numeric(as.character(Y$`m/z`))), max(as.numeric(as.character(Y$`m/z`))), by=1000), limits=c(min(as.numeric(as.character(Y$`m/z`))),max(as.numeric(as.character(Y$`m/z`)))))
+q
+ggplotly(q, dynamicTicks = T)
+
+
+#strain Ne1532 ========================================================
+
+
+ind2 = Y_S_Aureus_No_Preprocessing_withMz[, "strain"] == 1791532;
+
+Y2 = Y_S_Aureus_No_Preprocessing_withMz[ind2,];
+
+Y2$ID = paste0(Y2$strain, ".", 1:length(Y2$strain))
+
+Y2$Label = paste0("Ne1532", ".", Y2$ID)
+
+Y <- melt(Y2, id.vars = c("strain", "ID", "Label"), variable.name = "m/z", value.name = "Intensity")
+
+
+q <- ggplot(data = Y, aes(x = as.numeric(as.character(`m/z`)), y = `Intensity`, group=`Label`, color=`Label` )) + theme_bw() + geom_line() + labs(color=NULL)  + xlab("m/z") + ylab("Intensity") + ggtitle(paste0("S.Aureus Ne1532 strain: intensity by m/z for 8 replicates")) + theme(plot.title = element_text(hjust = 0), plot.background = element_rect(fill = "#F5F5F5", colour = "#F5F5F5")) + guides(color = guide_legend(override.aes = list(size = 1.5))) + theme(legend.title=element_blank(),  legend.direction = "vertical", legend.position="right") + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, margin=margin(5,0,7,0),face="bold")) + 
+  scale_x_continuous(breaks = seq(min(as.numeric(as.character(Y$`m/z`))), max(as.numeric(as.character(Y$`m/z`))), by=1000), limits=c(min(as.numeric(as.character(Y$`m/z`))),max(as.numeric(as.character(Y$`m/z`)))))
+q
+ggplotly(q, dynamicTicks = T)

@@ -1,0 +1,69 @@
+---
+  title: "WFMM MALDI results"
+output: html_document
+---
+  
+#```{r setup, include=FALSE}
+#knitr::opts_chunk$set(echo = TRUE)
+#```
+
+## R Markdown
+
+#Setup input data
+
+#```{r}
+library(readxl)
+library(data.table)
+library(ggplot2)
+library(plotly)
+library(knitr)
+
+Y_E_Coli_No_Preprocessing_withMz <- fread('C:/InstallationPhD/WFMM_V3.0_EColiGenomicStrain/Run E.Coli WFMM/Y_E_Coli_No_Preprocessing_St69_131Only.csv', data.table=FALSE)
+
+#Y_E_Coli_No_Preprocessing_withMz$V1
+
+
+ind1 = Y_E_Coli_No_Preprocessing_withMz[, "V1"] == 69;    #LAC
+ind2 = Y_E_Coli_No_Preprocessing_withMz[, "V1"] == 131;    #hld
+
+Y1 = Y_E_Coli_No_Preprocessing_withMz[ind1,];
+
+Y2 = Y_E_Coli_No_Preprocessing_withMz[ind2,];
+
+
+DT1 <- setDT(Y1)
+DT1[, split := "69"]
+DT2 <- setDT(Y2)
+DT2[, split := "131"]
+
+DT <- rbind(DT1, DT2)
+colnames(DT)[1] <- "Sample"
+#colnames(DT)[length(colnames(DT)) - 1] <- "Strain"
+DT[, ID := paste0(Sample, ".", 1:.N), by = Sample]
+
+#melt all x or mz values to give mz intensity pairs for each replicate
+DT <- melt(DT, id.vars = c("ID", "Sample", "split"), variable.name = "m/z", value.name = "Intensity")
+#DT[, `m/z` := as.integer(`m/z`)]
+DT[, ID := factor(ID)]
+DT[, Sample := factor(Sample)]
+#DT[, Strain := factor(paste0("st", Strain))]
+DT[, Intensity := Intensity - min(Intensity)]
+DT[split == "hld", Intensity := 0 - Intensity]
+DT[, label := paste(split, ID)]
+
+g <- ggplot(data = DT, aes(x = as.numeric(as.character(`m/z`)), y = `Intensity`, group=`label`, color=`label` )) + theme_bw() + geom_line() + labs(color=NULL)  + xlab("m/z") + ylab("Intensity") + ggtitle(paste0("S.Aureus LAC and hld strain: intensity by m/z for 8 replicates")) + theme(plot.title = element_text(hjust = 0), plot.background = element_rect(fill = "#F5F5F5", colour = "#F5F5F5")) + guides(color = guide_legend(override.aes = list(size = 1.5))) + theme(legend.title=element_blank(),  legend.direction = "vertical", legend.position="right", legend.text=element_text(size=0.1)) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, margin=margin(5,0,7,0),face="bold")) + 
+  scale_x_continuous(breaks = seq(min(as.numeric(as.character(DT$`m/z`))), max(as.numeric(as.character(DT$`m/z`))), by=1000), limits=c(min(as.numeric(as.character(DT$`m/z`))),max(as.numeric(as.character(DT$`m/z`)))))
+  
+g <- g + geom_line()
+
+ggplotly(g, dynamicTicks = T, width = 1000, height = 1000) %>%
+  layout(yaxis = list(showgrid = FALSE))
+
+p <- ggplotly(g, dynamicTicks = T, width = 1000, height = 1000) %>%
+  layout(yaxis = list(showgrid = FALSE))
+
+htmlwidgets::saveWidget(as_widget(p), "C:/InstallationPhD/WFMM_V3.0_EColiGenomicStrain_ST69_131_Rescaling/Run E.Coli WFMM/Mirror_replicatePlot_St69_131.html")
+
+
+#ggplotly(g, dynamicTicks = T, width = 1000, height = 1000)
+```

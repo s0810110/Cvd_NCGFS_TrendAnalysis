@@ -1,0 +1,13 @@
+name: cardioDshB
+title: cardioDshB
+username:
+account: bristolheartinstitutecardiacaudit
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2685767
+bundleId: 3873019
+url: https://bristolheartinstitutecardiacaudit.shinyapps.io/cardioDshB/
+when: 1605644325.13145
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: app BK 20201113 after removing month from gov uk data.R|app BK 20201115 before adding leaflet map separately for sim.R|app BK 20201117 after working on map and trend for improvements.R|app BK before adding reset function and making sliderinput rendered.R|appCvdDL_Branch model 3 with 1to36 as indices to data_gen BK prior to conversion to cloud deployable.R|www_obsolete/cvdImage.jpg|www_obsolete/cvdImageNhs.png|www_obsolete/logoSCTS.png|logoGenerationOnly|model_trainingOnly

@@ -1,0 +1,43 @@
+---
+title: "WFMM MALDI results"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+Setup input data
+
+```{r}
+library(readxl)
+library(data.table)
+library(ggplot2)
+library(plotly)
+library(knitr)
+
+DT1 <- setDT(read_xlsx("St69_St131_train.xlsx", col_names = F))
+DT1[, split := "train"]
+DT2 <- setDT(read_xlsx("St69_St131_test.xlsx", col_names = F))
+DT2[, split := "test"]
+
+DT <- rbind(DT1, DT2)
+colnames(DT)[1] <- "Sample"
+colnames(DT)[length(colnames(DT)) - 1] <- "Strain"
+DT[, ID := paste0(Sample, ".", 1:.N), by = Sample]
+
+DT <- melt(DT, id.vars = c("ID", "Sample", "Strain", "split"), variable.name = "x", value.name = "y")
+DT[, x := as.integer(x) - 1]
+DT[, ID := factor(ID)]
+DT[, Sample := factor(Sample)]
+DT[, Strain := factor(paste0("st", Strain))]
+DT[, y := y - min(y)]
+DT[Strain == "st69", y := 0 - y]
+DT[, label := paste(Strain, ID, split)]
+
+g <- ggplot(DT, aes(x = x, y = y, group = label, colour = label))
+g <- g + geom_line()
+ggplotly(g, dynamicTicks = T, width = 1000, height = 1000)
+```

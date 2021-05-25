@@ -1,0 +1,76 @@
+
+## load package
+library('MALDIquant', lib.loc='C:/Program Files/R/R-3.2.4revised/library')
+library('MALDIquantForeign', lib.loc='C:/Program Files/R/R-3.2.4revised/library')
+library("rjson")
+#Ref: https://stackoverflow.com/questions/2617600/importing-data-from-a-json-file-into-r
+
+s <- import("C:/InstallationPhD/HDR_UK_MALDI/AnalysisXML_HDR_UK/reducedMatchingSpectra", type="auto")
+#s <- import("C:/InstallationPhD/HDR_UK_MALDI/AnalysisXML_HDR_UK/cat3+updateFromNov", type="auto")
+
+#Remove temporarily to generate raw intensity files 
+s <- removeBaseline(s, method = 'SNIP', iterations = 100)
+
+
+
+sumTotalIonAllSpecVec = c()
+
+for (ii in 1:length(s))
+{
+  #add sum of each spectra to a vector 
+  sumTotalIonAllSpecVec <- c(sumTotalIonAllSpecVec, totalIonCurrent(s[[ii]]) ) 
+  
+  #obtain median of sum of intensity of each spectra
+  medianSumIonAllSpec <- median(sumTotalIonAllSpecVec, na.rm = FALSE)
+  
+  #median = 4784582
+}
+
+
+s <- calibrateIntensity(s, method = 'TIC')  # rescale using median of sum of intensities for each spectra
+
+
+#fileConn<-file("C:/InstallationPhD/HDR_UK_MALDI/AnalysisXML_HDR_UK/fidToMgf_WFMM/result.txt", open = "wt")
+fileConn<-file("C:/InstallationPhD/HDR_UK_MALDI/AnalysisXML_HDR_UK/fidToMgf_WFMM/resultST69_131_RescalingCorrection.txt", open = "wt")
+
+#without rescaling 
+#fileConn<-file("C:/InstallationPhD/HDR_UK_MALDI/AnalysisXML_HDR_UK/fidToMgf_WFMM/resultST69_131_noRescaling.txt", open = "wt")
+
+#sumTotalIonAllSpec <- 0
+#averageSumIonAllSpec <- 0
+
+
+
+for (ii in 1:length(s))
+{
+  #obtain path containing info file 
+  
+  fldrName <- basename(dirname(dirname(dirname(dirname(s[[ii]]@metaData$path)))))
+  
+  fullInfoPath <- paste0("C:/InstallationPhD/HDR_UK_MALDI/AnalysisXML_HDR_UK/reducedMatchingSpectra/", fldrName, "/info") 
+  #fullInfoPath <- paste0("C:/InstallationPhD/HDR_UK_MALDI/AnalysisXML_HDR_UK/cat3+updateFromNov/", fldrName, "/info") 
+  
+  sPaths <- paste0(dirname(dirname(dirname(dirname(s[[ii]]@metaData$file)))), "/info")
+  
+  json_data <- fromJSON(file=sPaths)
+  
+  writeLines("BEGIN IONS", fileConn)
+  
+  writeLines(paste(c("TITLE=", json_data$AnalyteId), collapse = ''), fileConn)
+  
+  writeLines(paste(c("scan=", as.character(ii)), collapse = ''), fileConn)
+
+  sizeSpectra <- length(s[[ii]]@mass)
+  
+  for (j in 1:sizeSpectra)
+  {
+    
+    writeLines(paste(c(as.character(s[[ii]]@mass[j]), " ",  as.character(s[[ii]]@intensity[j] * medianSumIonAllSpec)), collapse = ''), fileConn)
+    ##write(paste(c(" ", as.character(s[[1]]@intensity[j]), "\n"), collapse = ''), fileConn)
+  }
+  #paste(c(as.character(s[[1]]@mass[1]), " ",  as.character(s[[1]]@intensity[1])), collapse = '')
+  #paste(c(as.character(s[[1]]@mass[100]), " ",  as.character(s[[5]]@intensity[100])), collapse = '')
+  
+  writeLines("END IONS", fileConn)
+}
+close(fileConn)

@@ -1,0 +1,2 @@
+This model builds on the weights.58-0.02_4_500epochs.hdf5 model 
+by training another 3 iterations of 300 epochs.

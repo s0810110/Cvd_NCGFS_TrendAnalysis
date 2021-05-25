@@ -1,0 +1,56 @@
+---
+  title: "WFMM MALDI results"
+output: html_document
+---
+  
+#```{r setup, include=FALSE}
+#knitr::opts_chunk$set(echo = TRUE)
+#```
+
+## R Markdown
+
+#Setup input data
+
+#```{r}
+library(readxl)
+library(data.table)
+library(ggplot2)
+library(plotly)
+library(knitr)
+
+Y_S_Aureus_No_Preprocessing_withMz <- fread('C:/Users/qd18830/OneDrive - University of Bristol/Documents/PhD/WFMM/Staph Aureus/unPreprocessed_SAureuswithMZ/Y_S_Aureus_No_Preprocessing_withMz.csv', data.table=FALSE)
+
+Y_S_Aureus_No_Preprocessing_withMz$V1
+
+ind1 = Y_S_Aureus_No_Preprocessing_withMz[, "V1"] == 2072;
+ind2 = Y_S_Aureus_No_Preprocessing_withMz[, "V1"] == 1791532;
+
+Y1 = Y_S_Aureus_No_Preprocessing_withMz[ind1,];
+
+Y2 = Y_S_Aureus_No_Preprocessing_withMz[ind2,];
+
+
+DT1 <- setDT(Y1)
+DT1[, split := "je2"]
+DT2 <- setDT(Y2)
+DT2[, split := "Ne1532"]
+
+DT <- rbind(DT1, DT2)
+colnames(DT)[1] <- "Sample"
+#colnames(DT)[length(colnames(DT)) - 1] <- "Strain"
+DT[, ID := paste0(Sample, ".", 1:.N), by = Sample]
+
+#melt all x or mz values to give mz intensity pairs for each replicate
+DT <- melt(DT, id.vars = c("ID", "Sample", "split"), variable.name = "x", value.name = "y")
+DT[, x := as.integer(x) - 1]
+DT[, ID := factor(ID)]
+DT[, Sample := factor(Sample)]
+#DT[, Strain := factor(paste0("st", Strain))]
+DT[, y := y - min(y)]
+DT[split == "je2", y := 0 - y]
+DT[, label := paste(split, ID)]
+
+g <- ggplot(DT, aes(x = x, y = y, group = label, colour = label))
+g <- g + geom_line()
+ggplotly(g, dynamicTicks = T, width = 1000, height = 1000)
+```

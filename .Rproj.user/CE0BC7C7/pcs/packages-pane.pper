@@ -1,0 +1,7 @@
+{
+    "installOptions": {
+        "installFromRepository": true,
+        "libraryPath": "C:/Users/qd18830/OneDrive - University of Bristol/Documents/R/win-library/4.0",
+        "installDependencies": true
+    }
+}
