@@ -23,7 +23,7 @@ BibTeX entry:
 
 ```bibtex
 @article{dong_deep_2021,
-	title = {A Deep Recurrent Reinforced Learning model to compare the efficacy of targeted local vs. national measures on the spread of {COVID}-19 in the {UK}},
+	title = {A Deep Recurrent Reinforced Learning model to compare the efficacy of targeted local vs. national measures on the spread of COVID-19 in the UK},
 	author = {Dong, Tim and Benedetto, Umberto and Sinha, Shubhra and Dimagli, Arnaldo and Caputo, Massimo and Angelini, Gianni D},
 	journal = {medRxiv},
 	date = {2021}
