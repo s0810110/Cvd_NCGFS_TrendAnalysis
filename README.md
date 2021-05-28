@@ -4,6 +4,11 @@
   <img src="https://github.com/s0810110/Cvd_NCGFS_TrendAnalysis/blob/master/data/logoNCGFS.png" width="750" >
 </div>
 
+<div align="left">
+  <img src="https://github.com/s0810110/Cvd_NCGFS_TrendAnalysis/blob/master/github_images/summary.PNG" width="750" >
+</div>
+
+
 ## Deep Learning Reinforced RNN for Covid-19 trend prediction 
 
 We have developed a deep learning model that provides predictions of the COVID-19 related number of cases and mortality in the upcoming 5 weeks and simulates the effect of policy changes targeting COVID-19 spread.
