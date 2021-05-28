@@ -27,6 +27,13 @@ Model predictions of the number of cases and mortality of COVID-19 in the upcomi
 
 The second national lockdown should be followed by measures which are more effective than LD_SD alone. Our model suggests the importance of restrictions on international travel and travel quarantines, thus suggesting that follow-up policies should consist of the combination of LD_SD and a reduction in the number of open airports within close proximity of the hotspot regions. Stricter measures should be placed in terms travel quarantine to increase the impact of this measure. It is also recommended that restrictions should be placed on the number of schools and pubs open.
 
+### Example of Trend Prediction 
+
+<div align="left">
+  <img src="https://github.com/s0810110/Cvd_NCGFS_TrendAnalysis/blob/master/github_images/ExampleTrend.PNG" width="750" >
+</div>
+
+
 # Citing NCGFS
 If you use NCGFS in a scientific publication, please cite the following paper:
  
